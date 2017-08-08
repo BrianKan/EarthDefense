@@ -59,7 +59,8 @@ public class GameView extends SurfaceView implements Runnable {
     int score;
     int lives;
     int highScore[] = new int[4];
-
+    private int animStart;
+    private int animLocX,animLocY;
     private Bitmap poof0,poof1,poof2,poof3,poof4,poof5;
     //TODO List
     public GameView(Context context, int screenX, int screenY){
@@ -68,6 +69,9 @@ public class GameView extends SurfaceView implements Runnable {
         paint = new Paint();
         this.screenX = screenX;
         this.screenY=screenY;
+
+        animLocX=-500;
+        animLocY=-500;
         this.context=context;
         isGameOver = false;
         rng=new Random();
@@ -112,7 +116,6 @@ public class GameView extends SurfaceView implements Runnable {
             update();
             draw();
             control();
-            Log.i("time",""+SystemClock.currentThreadTimeMillis());
         }
 
     }
@@ -177,28 +180,21 @@ public class GameView extends SurfaceView implements Runnable {
 
             canvas.drawBitmap(healthPack.getBitmap(),healthPack.getX(),healthPack.getY(),paint);
 
-//            int i=0;
-//            for(i=0;i<6;i++)
-            switch(Math.round(SystemClock.currentThreadTimeMillis()/200)) {
-                case 1:
-                    canvas.drawBitmap(poof0, 0, 0, paint) ;
-                    break;
-                case 2:
-                    canvas.drawBitmap(poof1, 0, 0, paint) ;
-                    break;
-                case 3:
-                    canvas.drawBitmap(poof2, 0, 0, paint) ;
-                    break;
-                case 4:
-                    canvas.drawBitmap(poof3, 0, 0, paint) ;
-                    break;
-                case 5:
-                    canvas.drawBitmap(poof4, 0, 0, paint) ;
-                    break;
-                case 6:
-                    canvas.drawBitmap(poof5, 0, 0, paint) ;
-                    break;
-            }
+
+            animStart++;
+                if(animStart>=0&&animStart<=2)
+                    canvas.drawBitmap(poof0, animLocX, animLocY, paint) ;
+                else if(animStart>=3&&animStart<=5)
+                    canvas.drawBitmap(poof1, animLocX, animLocY, paint) ;
+                else if(animStart>=6&&animStart<=8)
+                    canvas.drawBitmap(poof2, animLocX, animLocY, paint) ;
+                else if(animStart>=9&&animStart<=11)
+                    canvas.drawBitmap(poof3, animLocX, animLocY, paint) ;
+                else if(animStart>=12&&animStart<=14)
+                    canvas.drawBitmap(poof4, animLocX, animLocY, paint) ;
+                else if(animStart>=15&&animStart<=17)
+                    canvas.drawBitmap(poof5, animLocX, animLocY, paint) ;
+
             if(isGameOver){
                       if(runOnce==1) {
                           for (int i = 0; i < 4; i++) {
@@ -233,9 +229,10 @@ public class GameView extends SurfaceView implements Runnable {
 //                        System.out.println("Yeah here it is");
                         if (sharedPreferences.getBoolean("soundEnable", true))
                             soundPool.play(explosion, 1, 1, 0, 0, 1);
-
                         score++;
-
+                        animStart=0;
+                        animLocX=touchX-poof0.getWidth()/2;
+                        animLocY=touchY-poof0.getHeight()/2;
                         invaders.setX(rng.nextInt(screenX-100));
                         invaders.setY((rng.nextInt(2)+1)*-200);
                         invaders.getHitBox().set(invaders.getX(),invaders.getY(),invaders.getX()+invaders.getBitmap().getWidth(),invaders.getY()+invaders.getBitmap().getHeight());
