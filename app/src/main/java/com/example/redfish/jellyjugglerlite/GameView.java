@@ -26,6 +26,10 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.redfish.jellyjugglerlite.invaders.Asteroid;
+import com.example.redfish.jellyjugglerlite.invaders.Invaderstwo;
+import com.example.redfish.jellyjugglerlite.invaders.Ufo;
+
 import java.net.MulticastSocket;
 import java.util.ArrayList;
 import java.util.Random;
@@ -42,7 +46,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Paint paint;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
-    private ArrayList<Invaders> invadersArrayList;
+    private ArrayList<Invaderstwo> invadersArrayList;
     private Random rng;
     int screenX;
     int screenY;
@@ -90,7 +94,7 @@ public class GameView extends SurfaceView implements Runnable {
         health1=BitmapFactory.decodeResource(context.getResources(),R.drawable.health1);
         health2=BitmapFactory.decodeResource(context.getResources(),R.drawable.health2);
         health3=BitmapFactory.decodeResource(context.getResources(),R.drawable.health3);
-        invadersArrayList=new ArrayList<Invaders>();
+        invadersArrayList=new ArrayList<Invaderstwo>();
 
         poof0 = BitmapFactory.decodeResource(context.getResources(), R.drawable.poof0);
         poof1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.poof1);
@@ -99,8 +103,8 @@ public class GameView extends SurfaceView implements Runnable {
         poof4 = BitmapFactory.decodeResource(context.getResources(), R.drawable.poof4);
         poof5 = BitmapFactory.decodeResource(context.getResources(), R.drawable.poof5);
         //TODO Enemies
-        for(int i=0;i<3;i++) {
-            invadersArrayList.add(new Invaders(context, rng.nextInt(screenX-100)));
+        for(int i = 0; i < 3;i++) {
+            invadersArrayList.add(new Asteroid(context, rng.nextInt(screenX-100)));
         }
 
     }
@@ -120,17 +124,24 @@ public class GameView extends SurfaceView implements Runnable {
     private void update() {
         healthPack.update();
 
-        for(Invaders invaders:invadersArrayList) {
+        for(Invaderstwo invaders:invadersArrayList) {
             invaders.move();
         }
         if(score%10==0&&score>0){
             score++;
-            for(Invaders invaders:invadersArrayList)
-                invaders.setSpeed(invaders.getSpeed()+1);
+            for(Invaderstwo invaders:invadersArrayList)
+                invaders.setY_speed(invaders.getY_speed()+1);
+        }
+        if(score == 50) {
+            invadersArrayList.add(new Ufo(context, rng.nextInt(screenX - 100)));
         }
         if(score%50==0&&score>0){
             score++;
-            invadersArrayList.add(new Invaders(context, rng.nextInt(screenX-100)));
+            invadersArrayList.add(new Asteroid(context, rng.nextInt(screenX-100)));
+        }
+        if(score % 100 == 0 && score > 0){
+            score++;
+            invadersArrayList.add(new Ufo(context, rng.nextInt(screenX-100)));
         }
 
     }
@@ -160,7 +171,7 @@ public class GameView extends SurfaceView implements Runnable {
                 healthPack.setY((rng.nextInt(2)+1)*-200);
                 healthPack.getHitbox().set(healthPack.getX(),healthPack.getY(),healthPack.getX()+healthPack.getBitmap().getWidth(),healthPack.getY()+healthPack.getBitmap().getHeight());
             }
-            for(Invaders invaders:invadersArrayList) {
+            for(Invaderstwo invaders:invadersArrayList) {
                 canvas.drawBitmap(invaders.getBitmap(), invaders.getX(), invaders.getY(), paint);
                 if (Math.round(invaders.getY()) > Math.round(screenY/2)) {
                     lives--;
@@ -228,7 +239,7 @@ public class GameView extends SurfaceView implements Runnable {
         switch(motionEvent.getAction()){
             case MotionEvent.ACTION_DOWN:
 //                System.out.println("Hey touch works");
-                for(Invaders invaders:invadersArrayList){
+                for(Invaderstwo invaders:invadersArrayList){
                     if(invaders.getHitBox().contains(touchX,touchY)){
 //                        System.out.println("Yeah here it is");
                         if (sharedPreferences.getBoolean("soundEnable", true))
