@@ -10,13 +10,14 @@ import com.example.redfish.jellyjugglerlite.R;
  * Created by TallGuy on 8/8/2017.
  */
 
-public class Asteroid extends Invaderstwo {
+public class Meteor extends Invaderstwo {
 
-    public Asteroid(Context context, int x) {
+    public Meteor(Context context, int x) {
+
         super(context, x);
-        this.type = "asteroid";
-        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid);
-        this.y_speed = 4;
+        this.type = "meteor";
+        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.meteor);
+        this.y_speed = 20;
         this.hitBox = new Rect(this.x, this.y, this.x + bitmap.getWidth(), this.y + bitmap.getHeight());
     }
 }

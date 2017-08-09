@@ -12,6 +12,7 @@ import java.util.Random;
 
 public abstract class Invaderstwo {
 
+    protected String type;
     protected Bitmap bitmap;
     protected int x;
     protected int y;
@@ -64,5 +65,7 @@ public abstract class Invaderstwo {
         return y_speed;
     }
 
-
+    public String getType() {
+        return type;
+    }
 }

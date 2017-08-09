@@ -14,12 +14,15 @@ import java.util.Random;
 
 public class Ufo extends Invaderstwo {
 
-    private static int reverse = 0;
+    private int reverse = 0;
+    private int screenX;
 
-    public Ufo(Context context, int x) {
+    public Ufo(Context context, int x, int screenX) {
         super(context, x);
-        this.bitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.ufo);
-        this.x_speed = 10;
+        this.type = "ufo";
+        this.screenX = screenX;
+        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ufo);
+        this.x_speed = 5;
         this.y_speed = 6;
         this.hitBox = new Rect(this.x, this.y, this.x + bitmap.getWidth(), this.y + bitmap.getHeight());
     }
@@ -27,11 +30,11 @@ public class Ufo extends Invaderstwo {
     @Override
     public void move() {
         this.reverse += 1;
-        if (this.reverse % 10 == 0) {
+        if (this.reverse % 15 == 0 && this.reverse > 0) {
             this.x_speed *= -1;
         }
         this.y += y_speed;
         this.x += x_speed;
-        hitBox.set(x, y, x + bitmap.getWidth(), y + getBitmap().getHeight());
+        hitBox = new Rect(this.x, this.y, this.x + bitmap.getWidth(), this.y + bitmap.getHeight());
     }
 }
