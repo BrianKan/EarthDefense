@@ -336,7 +336,9 @@ public class GameView extends SurfaceView implements Runnable {
                         animLocX = touchX - poof0.getWidth() / 2;
                         animLocY = touchY - poof0.getHeight() / 2;
                         if (invaders.getType().equals("meteor")) {
-                            invadersArrayList.remove(invaders);
+                            invaders.setX(rng.nextInt(screenX - 100));
+                            invaders.setY((rng.nextInt(3) + 4) * -2000);
+                            invaders.getHitBox().set(invaders.getX(), invaders.getY(), invaders.getX() + invaders.getBitmap().getWidth(), invaders.getY() + invaders.getBitmap().getHeight());
                         } else {
                             invaders.setX(rng.nextInt(screenX - 100));
                             invaders.setY((rng.nextInt(2) + 1) * -200);
