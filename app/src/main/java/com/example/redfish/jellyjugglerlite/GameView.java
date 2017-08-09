@@ -64,6 +64,8 @@ public class GameView extends SurfaceView implements Runnable {
     private int anim2LocX,anim2LocY;
     private int animStart;
     private int animLocX,animLocY;
+    private int anim3Start;
+    private int anim3LocX,anim3LocY;
     private Bitmap poof0,poof1,poof2,poof3,poof4,poof5;
     private Bitmap nuke0,nuke1,nuke2,nuke3,nuke4,nuke5,nuke6,nuke7,nuke8,nuke9,nuke10,nuke11;
     //TODO List
@@ -76,9 +78,10 @@ public class GameView extends SurfaceView implements Runnable {
 
         animLocX=-500;
         animLocY=-500;
-
-        anim2LocX=-500;
-        anim2LocY=-500;
+        anim3LocX=-500;
+        anim3LocY=-500;
+        anim2LocX=-700;
+        anim2LocY=-700;
         this.context=context;
         isGameOver = false;
         rng=new Random();
@@ -118,18 +121,18 @@ public class GameView extends SurfaceView implements Runnable {
         nuke10 = BitmapFactory.decodeResource(context.getResources(), R.drawable.nuke10);
         nuke11 = BitmapFactory.decodeResource(context.getResources(), R.drawable.nuke11);
 
-        nuke0 = Bitmap.createScaledBitmap(nuke0,500,500,true);
-        nuke1 = Bitmap.createScaledBitmap(nuke1,500,500,true);
-        nuke2 = Bitmap.createScaledBitmap(nuke2,500,500,true);
-        nuke3 = Bitmap.createScaledBitmap(nuke3,500,500,true);
-        nuke4 = Bitmap.createScaledBitmap(nuke4,500,500,true);
-        nuke5 = Bitmap.createScaledBitmap(nuke5,500,500,true);
-        nuke6 = Bitmap.createScaledBitmap(nuke6,500,500,true);
-        nuke7 = Bitmap.createScaledBitmap(nuke7,500,500,true);
-        nuke8 = Bitmap.createScaledBitmap(nuke8,500,500,true);
-        nuke9 = Bitmap.createScaledBitmap(nuke9,500,500,true);
-        nuke10 = Bitmap.createScaledBitmap(nuke10,500,500,true);
-        nuke11 = Bitmap.createScaledBitmap(nuke11,500,500,true);
+        nuke0 = Bitmap.createScaledBitmap(nuke0,700,700,true);
+        nuke1 = Bitmap.createScaledBitmap(nuke1,700,700,true);
+        nuke2 = Bitmap.createScaledBitmap(nuke2,700,700,true);
+        nuke3 = Bitmap.createScaledBitmap(nuke3,700,700,true);
+        nuke4 = Bitmap.createScaledBitmap(nuke4,700,700,true);
+        nuke5 = Bitmap.createScaledBitmap(nuke5,700,700,true);
+        nuke6 = Bitmap.createScaledBitmap(nuke6,700,700,true);
+        nuke7 = Bitmap.createScaledBitmap(nuke7,700,700,true);
+        nuke8 = Bitmap.createScaledBitmap(nuke8,700,700,true);
+        nuke9 = Bitmap.createScaledBitmap(nuke9,700,700,true);
+        nuke10 = Bitmap.createScaledBitmap(nuke10,700,700,true);
+        nuke11 = Bitmap.createScaledBitmap(nuke11,700,700,true);
 
 
         poof0 = BitmapFactory.decodeResource(context.getResources(), R.drawable.poof0);
@@ -198,18 +201,21 @@ public class GameView extends SurfaceView implements Runnable {
             }
             if (Math.round(healthPack.getY()) > Math.round(screenY/2)){
                 healthPack.setX(rng.nextInt(screenX-100));
-                healthPack.setY((rng.nextInt(2)+1)*-200);
+                healthPack.setY((rng.nextInt(2)+1)*-400);
                 healthPack.getHitbox().set(healthPack.getX(),healthPack.getY(),healthPack.getX()+healthPack.getBitmap().getWidth(),healthPack.getY()+healthPack.getBitmap().getHeight());
             }
             if (Math.round(nuke.getY()) > Math.round(screenY/2)){
                 nuke.setX(rng.nextInt(screenX-100));
-                nuke.setY((rng.nextInt(2)+1)*-200);
+                nuke.setY((rng.nextInt(2)+1)*-500);
                 nuke.getHitbox().set(nuke.getX(),nuke.getY(),nuke.getX()+nuke.getBitmap().getWidth(),nuke.getY()+nuke.getBitmap().getHeight());
             }
             for(Invaders invaders:invadersArrayList) {
                 canvas.drawBitmap(invaders.getBitmap(), invaders.getX(), invaders.getY(), paint);
                 if (Math.round(invaders.getY()) > Math.round(screenY/2)) {
                     lives--;
+                    anim3Start=0;
+                    anim3LocX=invaders.getX();
+                    anim3LocY=invaders.getY();
 
                     if (!isGameOver) {
                         if (sharedPreferences.getBoolean("soundEnable", true))
@@ -223,7 +229,20 @@ public class GameView extends SurfaceView implements Runnable {
 
             canvas.drawBitmap(healthPack.getBitmap(),healthPack.getX(),healthPack.getY(),paint);
             canvas.drawBitmap(nuke.getBitmap(),nuke.getX(),nuke.getY(),paint);
-
+            anim3Start++;
+            if(anim3Start>=0&&anim3Start<=2)
+                canvas.drawBitmap(poof0, anim3LocX, anim3LocY, paint) ;
+            else if(anim3Start>=3&&anim3Start<=5)
+                canvas.drawBitmap(poof1, anim3LocX, anim3LocY, paint) ;
+            else if(anim3Start>=6&&anim3Start<=8)
+                canvas.drawBitmap(poof2, anim3LocX, anim3LocY, paint) ;
+            else if(anim3Start>=9&&anim3Start<=11)
+                canvas.drawBitmap(poof3, anim3LocX, anim3LocY, paint) ;
+            else if(anim3Start>=12&&anim3Start<=14)
+                canvas.drawBitmap(poof4, anim3LocX, anim3LocY, paint) ;
+            else if(anim3Start>=15&&anim3Start<=17)
+                canvas.drawBitmap(poof5, anim3LocX, anim3LocY, paint) ;
+            
             anim2Start++;
             if(anim2Start>=0&&anim2Start<=2)
                 canvas.drawBitmap(nuke0, anim2LocX, anim2LocY, paint) ;
@@ -315,7 +334,7 @@ public class GameView extends SurfaceView implements Runnable {
                     if (sharedPreferences.getBoolean("soundEnable", true))
                         soundPool.play(powerup, 1, 1, 0, 0, 1);
                     healthPack.setX(rng.nextInt(screenX-100));
-                    healthPack.setY((rng.nextInt(2)+1)*-200);
+                    healthPack.setY((rng.nextInt(2)+1)*-300);
                     healthPack.getHitbox().set(healthPack.getX(),healthPack.getY(),healthPack.getX()+healthPack.getBitmap().getWidth(),healthPack.getY()+healthPack.getBitmap().getHeight());
                 }
 
@@ -328,10 +347,10 @@ public class GameView extends SurfaceView implements Runnable {
                             invaders.getHitBox().set(invaders.getX(),invaders.getY(),invaders.getX()+invaders.getBitmap().getWidth(),invaders.getY()+invaders.getBitmap().getHeight());
                         }
                         anim2Start=0;
-                        anim2LocX=touchX-nuke0.getWidth()/2;
-                        anim2LocY=touchY-nuke0.getHeight()/2;
+                        anim2LocX=screenX/2-nuke0.getWidth()/2;
+                        anim2LocY=screenY/4-nuke0.getHeight()/2;
                     nuke.setX(rng.nextInt(screenX-100));
-                    nuke.setY((rng.nextInt(2)+1)*-200);
+                    nuke.setY((rng.nextInt(2)+1)*-500);
                     nuke.getHitbox().set(nuke.getX(),nuke.getY(),nuke.getX()+nuke.getBitmap().getWidth(),nuke.getY()+nuke.getBitmap().getHeight());
                 }
         }

@@ -21,7 +21,7 @@ public class Nuke {
 
     public Nuke(Context context, int x, int y){
         bitmap= BitmapFactory.decodeResource(context.getResources(),R.drawable.nukebomb);
-        bitmap=Bitmap.createScaledBitmap(bitmap,200,200,true);
+        bitmap=Bitmap.createScaledBitmap(bitmap,100,100,true);
         this.x=x;
         this.y=y;
         speed=1;
